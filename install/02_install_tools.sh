@@ -26,4 +26,4 @@ peg sshcmd-node ${CLUSTER_NAME}.db 1 "sudo apt-get install coreutils make gcc "\
 " && cd \${REDIS_HOME} "\
 " && sudo make distclean && sudo make"
 
-ingolf peg sshcmd-node ${CLUSTER_NAME} 1 "sudo pip install kafka-python"
+peg sshcmd-node ${CLUSTER_NAME} 1 "sudo pip install kafka-python"
