@@ -1,4 +1,4 @@
-# LLEA
+# LLEA (is under construction)
 
 ## Low Latency Event Alerts
 
@@ -8,7 +8,6 @@
 
 ##Introduction
 
-[Back to Table of Contents](README.md#table-of-contents)
 
 <!-- 
 * Intro complemented by slides in [llea.halfwheeler.com/deck](https://docs.google.com/deck here)
@@ -22,10 +21,17 @@
 * continue 
 -->
 
-##Installing
+##Installation
+[Back to Top](README.md#table-of-contents)
 
 ### Prerequisites
-* (hardware, software)
-### Cluster configuration
+* Scripts and tools used in this project assume you are running this package on Amazon Elastic Compute instances.
+* list hardware used
+* list required software
+
+
+### Notes on Cluster Configuration 
 
 ##Running Instructions
+[Back to Top](README.md#table-of-contents)
+

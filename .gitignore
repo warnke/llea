@@ -87,3 +87,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Pegasus yml configuration files
+config/datanodes.yml
+config/namenode.yml
+config/db.yml
+config/cluster-name.txt
+
