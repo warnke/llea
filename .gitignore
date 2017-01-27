@@ -93,4 +93,4 @@ config/datanodes.yml
 config/namenode.yml
 config/db.yml
 config/cluster-name.txt
-
+src/spark-consumer/src/main/resources/application.conf
