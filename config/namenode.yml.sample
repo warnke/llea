@@ -1,0 +1,10 @@
+purchase_type: on_demand
+subnet_id: your-subnet-id
+num_instances: 1
+key_name: name-of-ssh-key
+security_group_ids: your-sec-group-id
+instance_type: m3.medium
+tag_name: name-of-your-cluster-in-aws
+vol_size: 100
+role: master
+use_eips: true
