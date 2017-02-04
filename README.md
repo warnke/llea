@@ -69,3 +69,10 @@
 ##Running Instructions
 [Back to Top](README.md#table-of-contents)
 
+### Data Simulation (Python Producer)
+
+### Ingestion (Kafka)
+
+### Stream Processing and Microbatching (Flink and Spark)
+
+### Frontend (Flask)
