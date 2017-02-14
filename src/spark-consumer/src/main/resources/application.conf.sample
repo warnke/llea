@@ -1,5 +1,0 @@
-llea = {
-    masterhost="xx.xx.xx.xx"
-    topics="your-topic-name-here"
-    dbhost="xx.xx.xx.xx"
-}
