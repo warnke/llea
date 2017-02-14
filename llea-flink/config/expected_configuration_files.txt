@@ -1,0 +1,5 @@
+List of required configuration files:
+namenode.yml
+datanodes.yml
+db.yml
+cluster-name.txt
