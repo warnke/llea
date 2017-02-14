@@ -15,7 +15,11 @@ import scala.collection
 import collection.mutable
 import scala.concurrent.ExecutionContext.Implicits.global
 
-// Consumes Kafka stream and outputs running totals into Redis as state engine
+//// Overview
+// 1 - consume kafka topic with sensor messages
+// 2 - aggregate over event time windows
+// 3 - output counts into Redis
+
 object LleaStreaming extends Serializable {
   def main(args: Array[String]) {
 
@@ -25,13 +29,7 @@ object LleaStreaming extends Serializable {
     val topics = conf.getString("llea.topics")
     val topicsSet = topics.split(",").toSet
 
-    // Debugging only
-    //println("masterdns read from config: " + masterdns)
-    //println("topics read from config: " + topics)
-    //println("llea.db host: " + conf.getString("llea.dbhost"))
-    //println("llea.db password: " + conf.getString("llea.dbpassword"))
-
-    // Create context with 5 second batch interval
+    // Create context, specify batch interval
     val sparkConf = new SparkConf().setAppName("llea-stream")
     val ssc = new StreamingContext(sparkConf, new Duration(5000))
     ssc.checkpoint("hdfs://" + masterdns + ":9000/user/checkpoint")
@@ -40,7 +38,7 @@ object LleaStreaming extends Serializable {
     val kafkaParams = Map[String, String]("metadata.broker.list" -> brokers)
     val messages = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicsSet)
 
-    // function to convert a timestamp to 30 second time slot
+    // convert event time to 30 second bucket
     def convert_to_30sec(timestamp: String): String = {
       (timestamp.toDouble.toLong/30*30).toString
     }
@@ -53,7 +51,7 @@ object LleaStreaming extends Serializable {
       lazy val client: Redis = new Redis(host = redishost)
     }
 
-    // map each record into a tuple consisting of (key, ID, epochtime), total for each key+epochtime_to_30sec
+    // map records to tuples of (key, ID, epochtime), aggregate into buckets keyed "ID+30_sec_bucket"
     val sensorReadings = messages
       .mapPartitions( it =>
         it.map(tuple => {
@@ -65,8 +63,9 @@ object LleaStreaming extends Serializable {
           (count, key) => count += (key -> (count.getOrElse(key, 0) + 1))
         ).toIterator
       )
-      // output to Redis: current time on worker node and running totals.
-      // Use incrBy to accumulate atomically, creates key if it doesn't exist
+
+      // output timestamp for current/processing time on worker node and running totals.
+      // Use incrBy to accumulate atomically, creates key if not existing, or updates existing
       .foreachRDD( rdd => {
         rdd.mapPartitionsWithIndex( (index, it) => {
           val currtime: String = "%.2f".format(System.currentTimeMillis / 1000.0)
