@@ -40,8 +40,7 @@ def timeseries():
 
     ## Open Redis connection
                             
-    #red = StrictRedis(host='ec2-52-26-112-23.us-west-2.compute.amazonaws.com', password=None) # SPARK
-    red = StrictRedis(host='ec2-52-25-10-79.us-west-2.compute.amazonaws.com', password=None) # FLINK
+    #red = StrictRedis(host='xxxxx', password='OptionalRedisPasswordHere') 
 
     ## Compute average time at worker node when issuing messages from DB.
     dbTime = 0.0
@@ -92,7 +91,6 @@ def timeseries():
 # returns slide deck as redirect for easy access
 @app.route('/slides')
 def slides():
-    #return redirect("http://www.google.com")
     return redirect("https://docs.google.com/presentation/d/1up2ctpKWbFasaVBXw7OxhSEFBIpBT-ZM_CoFUewpWBI/edit?usp=sharing")
 
 #@app.route('/team')
@@ -102,7 +100,7 @@ def slides():
 #    #else:
 #    #   filename = 'data.png'
 #    #return send_file(filename, mimetype='image/png')
-#    return send_file('/home/ubuntu/Temp/john_kamps.JPG', mimetype='image/jpeg')
+#    return send_file('/home/ubuntu/Temp/picture.JPG', mimetype='image/jpeg')
 
 @app.route('/')
 @app.route('/index.html')

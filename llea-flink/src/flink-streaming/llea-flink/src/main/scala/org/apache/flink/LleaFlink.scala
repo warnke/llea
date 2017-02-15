@@ -30,7 +30,7 @@ class LleaRedisMapper extends RedisMapper[String]{
 
 object Main {
 
-  // Extract event time
+  // Extract event time from stream
   class TimestampExtractor extends AssignerWithPeriodicWatermarks[String] with Serializable {
     override def extractTimestamp(e: String, prevElementTimestamp: Long) = {
       e.split(";")(2).toFloat.floor.toLong 
@@ -46,13 +46,13 @@ object Main {
 
     
     // use first worker
-    properties.setProperty("bootstrap.servers", "ec2-35-167-63-252.us-west-2.compute.amazonaws.com:9092")
-    properties.setProperty("zookeeper.connect", "ec2-35-167-63-252.us-west-2.compute.amazonaws.com:2181")
+    properties.setProperty("bootstrap.servers", "replace-by-public-dns:9092")
+    properties.setProperty("zookeeper.connect", "replace-by-public-dns:2181")
     properties.setProperty("group.id", "org.apache.flink")
 
     // Configure Flink to Redis connector
     // val conf = new FlinkJedisPoolConfig.Builder().setHost(config.get("redis.host")).build()
-    val conf = new FlinkJedisPoolConfig.Builder().setHost("52.25.10.79").build()
+    val conf = new FlinkJedisPoolConfig.Builder().setHost("xx.xx.xx.xx").build()
 
     // Convert timestamp to 30 second event time window
     def convertTo30Sec(timestamp: String): String = {
